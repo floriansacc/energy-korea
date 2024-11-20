@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import { elecHomeFromJson, ElecHomeModel } from "../models/ElecHomeModel";
+import {
+  RenewEnergyModel,
+  renewEnergyModelFromJson,
+} from "../models/RenewEnergyModel";
 
-const endpointUrl: string = "/kepcoapi/powerUsage/houseAve.do";
+const endPointUrl: string = "/kepcoapi/renewEnergy.do";
 
-export default function useElecHome(props: UseElecHomeEntry) {
-  const [elecHome, setElecHome] = useState<ElecHomeModel | null>(null);
+export default function useRenewEnergy(props: UseRenewEnergyEntry) {
+  const [renewEnergy, setRenewEnergy] = useState<RenewEnergyModel | null>(null);
 
   const basicParams: { [key: string]: string } = {
     ...(props.year && { year: props.year.toString() }),
-    ...(props.month && { month: props.month.toString().padStart(2, "0") }),
     ...(props.cityCode && { metroCd: props.cityCode }),
-    ...(props.townCode && { cityCd: props.townCode }),
+    ...(props.genSrcCd && { cityCd: props.genSrcCd }),
     returnType: "json",
     apiKey: import.meta.env.VITE_DATA_KEPCO_API_KEY ?? "",
   };
@@ -18,41 +20,39 @@ export default function useElecHome(props: UseElecHomeEntry) {
   const urlParams = new URLSearchParams(basicParams);
 
   useEffect(() => {
-    if (!props.cityCode || !props.year || !props.month) return;
+    if (!props.cityCode || !props.year) return;
 
-    const getElecHome = async (): Promise<void> => {
-      const fetchUrl = `${endpointUrl}?${urlParams}`;
+    const getRenewEnergy = async (): Promise<void> => {
+      const fetchUrl = `${endPointUrl}?${urlParams}`;
       try {
         const response = await fetch(fetchUrl, {
           headers: {
             "Content-Type": "application/json",
           },
-          // credentials: "same-origin",
-          // mode: "cors",
           method: "GET",
         });
         if (!response.ok) {
           const errorResponse = await response.text();
           throw new Error(`${errorResponse}`);
         }
-        const jsonResponse: ElecHomeModel = elecHomeFromJson(
+        const jsonResponse: RenewEnergyModel = renewEnergyModelFromJson(
           await response.json(),
         );
-        setElecHome(jsonResponse);
+
+        setRenewEnergy(jsonResponse);
       } catch (error) {
         console.log(error);
       }
     };
 
-    getElecHome();
+    getRenewEnergy();
   }, []);
 
-  return { elecHome };
+  return { renewEnergy };
 }
 
-interface UseElecHomeEntry {
+interface UseRenewEnergyEntry {
   year: number | null;
-  month: number | null;
   cityCode: string | null;
-  townCode?: string;
+  genSrcCd?: string | null;
 }

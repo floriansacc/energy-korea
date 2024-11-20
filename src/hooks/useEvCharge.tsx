@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { EvChargeModel, evChargeModelFromJson } from "../models/EvChargeModel";
 
-const baseUrl: string = "/EVcharge.do";
+const endpointUrl: string = "/kepcoapi//EVcharge.do";
 
 export default function useEvCharge(props: UseEvChargeEntry) {
   const [evCharge, setEvCharge] = useState<EvChargeModel | null>(null);
 
   const basicParams: { [key: string]: string } = {
-    metroCd: props.cityCode,
+    ...(props.cityCode && { metroCd: props.cityCode }),
     ...(props.townCode && { cityCd: props.townCode }),
     returnType: "json",
     apiKey: import.meta.env.VITE_DATA_KEPCO_API_KEY ?? "",
@@ -16,8 +16,10 @@ export default function useEvCharge(props: UseEvChargeEntry) {
   const urlParams = new URLSearchParams(basicParams);
 
   useEffect(() => {
+    if (!props.cityCode) return;
+
     const getEvCharge = async (): Promise<void> => {
-      const fetchUrl = `${baseUrl}${urlParams}`;
+      const fetchUrl = `${endpointUrl}?${urlParams}`;
       try {
         const response = await fetch(fetchUrl, {
           headers: {
@@ -26,7 +28,8 @@ export default function useEvCharge(props: UseEvChargeEntry) {
           method: "GET",
         });
         if (!response.ok) {
-          throw new Error(`${response.statusText}`);
+          const errorResponse = await response.text();
+          throw new Error(`${errorResponse}`);
         }
         const jsonResponse: EvChargeModel = evChargeModelFromJson(
           await response.json(),
@@ -38,11 +41,13 @@ export default function useEvCharge(props: UseEvChargeEntry) {
       }
     };
 
-    //   getEvCharge();
+    getEvCharge();
   }, []);
+
+  return { evCharge };
 }
 
 interface UseEvChargeEntry {
-  cityCode: string;
+  cityCode: string | null;
   townCode?: string;
 }

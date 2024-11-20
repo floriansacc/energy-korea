@@ -1,10 +1,14 @@
 export interface EvChargeModel {
-  data: EvCharge[];
+  data?: EvCharge[];
+  errCd?: number | null;
+  errMsg?: string | null;
 }
 
 export const evChargeModelFromJson = (json: any): EvChargeModel => {
   return {
-    data: evChargeFromJsonList(json.data),
+    data: json.data && evChargeFromJsonList(json.data),
+    errCd: json.errCd,
+    errMsg: json.errMsg,
   };
 };
 

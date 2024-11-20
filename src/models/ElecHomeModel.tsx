@@ -1,9 +1,15 @@
 export interface ElecHomeModel {
   data: ElecModel[];
+  errCd?: number | null;
+  errMsg?: string | null;
 }
 
 export const elecHomeFromJson = (json: any): ElecHomeModel => {
-  return { data: elecModelFromJsonList(json.data) };
+  return {
+    data: json.data && elecModelFromJsonList(json.data),
+    errCd: json.errCd,
+    errMsg: json.errMsg,
+  };
 };
 
 export interface ElecModel {

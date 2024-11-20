@@ -1,9 +1,15 @@
 export interface RenewEnergyModel {
-  data: RenewEnergy[];
+  data?: RenewEnergy[];
+  errCd?: number | null;
+  errMsg?: string | null;
 }
 
-export const renewEnergyModel = (json: any): RenewEnergyModel => {
-  return { data: renewEnergyFromJsonList(json.data) };
+export const renewEnergyModelFromJson = (json: any): RenewEnergyModel => {
+  return {
+    data: json.data && renewEnergyFromJsonList(json.data),
+    errCd: json.errCd,
+    errMsg: json.errMsg,
+  };
 };
 
 interface RenewEnergy {
