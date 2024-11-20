@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
-import { elecHomeFromJson, ElecHomeModel } from "../models/ElecHomeModel";
+import { EvChargeModel, evChargeModelFromJson } from "../models/EvChargeModel";
 
-const baseUrl: string = "/kepcoapi/powerUsage/houseAve.do";
+const baseUrl: string = "/EVcharge.do";
 
-export default function useElecHome(props: UseElecHomeEntry) {
-  const [elecHome, setElecHome] = useState<ElecHomeModel | null>(null);
+export default function useEvCharge(props: UseEvChargeEntry) {
+  const [evCharge, setEvCharge] = useState<EvChargeModel | null>(null);
 
   const basicParams: { [key: string]: string } = {
-    year: props.year.toString(),
-    month: props.month.toString().padStart(2, "0"),
     metroCd: props.cityCode,
     ...(props.townCode && { cityCd: props.townCode }),
     returnType: "json",
@@ -18,37 +16,33 @@ export default function useElecHome(props: UseElecHomeEntry) {
   const urlParams = new URLSearchParams(basicParams);
 
   useEffect(() => {
-    const getElecHome = async (): Promise<void> => {
-      const fetchUrl = `${baseUrl}?${urlParams}`;
+    const getEvCharge = async (): Promise<void> => {
+      const fetchUrl = `${baseUrl}${urlParams}`;
       try {
         const response = await fetch(fetchUrl, {
           headers: {
             "Content-Type": "application/json",
           },
-          // credentials: "same-origin",
-          // mode: "cors",
           method: "GET",
         });
         if (!response.ok) {
           throw new Error(`${response.statusText}`);
         }
-        const jsonResponse: ElecHomeModel = elecHomeFromJson(
+        const jsonResponse: EvChargeModel = evChargeModelFromJson(
           await response.json(),
         );
-        setElecHome(jsonResponse);
+
+        setEvCharge(jsonResponse);
       } catch (error) {
         console.log(error);
       }
     };
-    // getElecHome();
-  }, []);
 
-  return { elecHome };
+    //   getEvCharge();
+  }, []);
 }
 
-interface UseElecHomeEntry {
-  year: number;
-  month: number;
+interface UseEvChargeEntry {
   cityCode: string;
   townCode?: string;
 }
