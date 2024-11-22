@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev2": "open -na 'Google Chrome' --args --user-data-dir=/tmp/temporary-chrome-profile-dir --disable-web-security && vite --host",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
