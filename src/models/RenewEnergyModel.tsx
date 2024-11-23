@@ -7,8 +7,8 @@ export interface RenewEnergyModel {
 export const renewEnergyModelFromJson = (json: any): RenewEnergyModel => {
   return {
     data: json.data && renewEnergyFromJsonList(json.data),
-    errCd: json.errCd,
-    errMsg: json.errMsg,
+    errCd: json.errCd ?? null,
+    errMsg: json.errMsg ?? null,
   };
 };
 

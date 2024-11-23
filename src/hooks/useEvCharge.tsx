@@ -3,8 +3,12 @@ import { EvChargeModel, evChargeModelFromJson } from "../models/EvChargeModel";
 
 const endpointUrl: string = "/kepcoapi//EVcharge.do";
 
+// const collectionName: string = "ev-charge";
+
 export default function useEvCharge(props: UseEvChargeEntry) {
   const [evCharge, setEvCharge] = useState<EvChargeModel | null>(null);
+
+  // const docName: string = `${props.cityCode}${props.townCode ? `-${props.townCode}` : ""}`;
 
   const basicParams: { [key: string]: string } = {
     ...(props.cityCode && { metroCd: props.cityCode }),
@@ -19,6 +23,14 @@ export default function useEvCharge(props: UseEvChargeEntry) {
     if (!props.cityCode) return;
 
     const getEvCharge = async (): Promise<void> => {
+      // const dbData: DocumentSnapshot = await getDoc(
+      //   doc(db, collectionName, docName),
+      // );
+
+      // if (dbData.exists()) {
+      //   console.log("ev charge from firebase");
+      // } else {
+      console.log("fetch ev charge");
       const fetchUrl = `${endpointUrl}?${urlParams}`;
       try {
         const response = await fetch(fetchUrl, {
@@ -36,9 +48,12 @@ export default function useEvCharge(props: UseEvChargeEntry) {
         );
 
         setEvCharge(jsonResponse);
+
+        // await setDoc(doc(db, collectionName, docName), jsonResponse);
       } catch (error) {
         console.log(error);
       }
+      // }
     };
 
     getEvCharge();

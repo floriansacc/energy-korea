@@ -7,8 +7,8 @@ export interface ElecHomeModel {
 export const elecHomeFromJson = (json: any): ElecHomeModel => {
   return {
     data: json.data && elecModelFromJsonList(json.data),
-    errCd: json.errCd,
-    errMsg: json.errMsg,
+    errCd: json.errCd ?? null,
+    errMsg: json.errMsg ?? null,
   };
 };
 

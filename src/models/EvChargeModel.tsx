@@ -7,8 +7,8 @@ export interface EvChargeModel {
 export const evChargeModelFromJson = (json: any): EvChargeModel => {
   return {
     data: json.data && evChargeFromJsonList(json.data),
-    errCd: json.errCd,
-    errMsg: json.errMsg,
+    errCd: json.errCd ?? null,
+    errMsg: json.errMsg ?? null,
   };
 };
 
