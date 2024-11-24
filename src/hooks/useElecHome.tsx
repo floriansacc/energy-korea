@@ -64,7 +64,7 @@ export default function useElecHome(props: UseElecHomeEntry) {
     };
 
     getElecHome();
-  }, []);
+  }, [props.cityCode, props.townCode]);
 
   return { elecHome };
 }
@@ -73,5 +73,5 @@ interface UseElecHomeEntry {
   year: number | null;
   month: number | null;
   cityCode: string | null;
-  townCode?: string;
+  townCode?: string | null;
 }

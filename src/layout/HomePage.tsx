@@ -4,12 +4,10 @@ import useRenewEnergy from "../hooks/useRenewEnergy";
 import useEvCharge from "../hooks/useEvCharge";
 import useGpsLocation from "../hooks/useGpsLocation";
 import MapComponent from "../components/map/MapComponent";
-import useCommonCode from "../hooks/useCommonCode";
+import IntroPage from "../pages/IntroPage";
 
 export default function HomePage() {
   const date = new Date("2024-09-01");
-
-  const { commonCode } = useCommonCode({ codeTy: null });
 
   const { elecHome } = useElecHome({
     year: null,
@@ -22,11 +20,6 @@ export default function HomePage() {
   const { evCharge } = useEvCharge({ cityCode: null });
 
   const { gpsLocation } = useGpsLocation();
-
-  useEffect(() => {
-    if (commonCode === null) return;
-    console.log(commonCode);
-  }, [commonCode]);
 
   useEffect(() => {
     if (elecHome === null) return;
@@ -44,8 +37,11 @@ export default function HomePage() {
   }, [evCharge]);
 
   return (
-    <div>
-      <MapComponent location={gpsLocation} />
+    <div className="flex h-screen w-screen flex-col items-center justify-start">
+      <div className="mt-10 flex gap-2">
+        <MapComponent location={gpsLocation} />
+        <IntroPage />
+      </div>
     </div>
   );
 }

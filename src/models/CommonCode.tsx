@@ -1,7 +1,7 @@
 export enum CommonCodeEnum {
-  metroCd = "metroCd",
-  cityCd = "cityCd",
-  genSrcCd = "genSrcCd",
+  city = "metroCd",
+  town = "cityCd",
+  genSource = "genSrcCd",
 }
 
 export interface CommonCodeModel {

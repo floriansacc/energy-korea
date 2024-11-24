@@ -64,7 +64,7 @@ export default function useCommonCode(props: UseCommonCodeProps) {
     };
 
     getCommonCode();
-  }, []);
+  }, [props.codeTy]);
   return { commonCode };
 }
 
