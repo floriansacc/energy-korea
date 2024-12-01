@@ -3,9 +3,9 @@ import {
   CommonCodeEnum,
   CommonCodeModel,
   commonCodeModelFromJson,
-} from "../models/CommonCode";
+} from "../../models/energy/CommonCode";
 import { doc, DocumentSnapshot, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../../firebase";
 
 const endpointUrl: string = "/kepcoapi/commonCode.do";
 

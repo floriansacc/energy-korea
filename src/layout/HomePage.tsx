@@ -1,47 +1,21 @@
-import { useEffect } from "react";
-import useElecHome from "../hooks/useElecHome";
-import useRenewEnergy from "../hooks/useRenewEnergy";
-import useEvCharge from "../hooks/useEvCharge";
-import useGpsLocation from "../hooks/useGpsLocation";
-import MapComponent from "../components/map/MapComponent";
+import { createContext } from "react";
+import useGpsLocation from "../hooks/map/useGpsLocation";
 import IntroPage from "../pages/IntroPage";
 
+export const Context = createContext<ContextEntry | null>(null);
+
 export default function HomePage() {
-  const date = new Date("2024-09-01");
-
-  const { elecHome } = useElecHome({
-    year: null,
-    month: date.getMonth() - 1,
-    cityCode: "11",
-  });
-
-  const { renewEnergy } = useRenewEnergy({ year: null, cityCode: "11" });
-
-  const { evCharge } = useEvCharge({ cityCode: null });
-
   const { gpsLocation } = useGpsLocation();
 
-  useEffect(() => {
-    if (elecHome === null) return;
-    console.log(elecHome);
-  }, [elecHome]);
-
-  useEffect(() => {
-    if (renewEnergy === null) return;
-    console.log(renewEnergy);
-  }, [renewEnergy]);
-
-  useEffect(() => {
-    if (evCharge === null) return;
-    console.log(evCharge);
-  }, [evCharge]);
-
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-start">
-      <div className="mt-10 flex gap-2">
-        <MapComponent location={gpsLocation} />
+    <Context.Provider value={{ gpsLocation }}>
+      <div className="flex h-fit min-h-screen w-screen flex-col items-center justify-start bg-gray-800">
         <IntroPage />
       </div>
-    </div>
+    </Context.Provider>
   );
+}
+
+interface ContextEntry {
+  gpsLocation: GeolocationCoordinates | null;
 }

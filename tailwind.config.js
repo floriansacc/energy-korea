@@ -9,6 +9,20 @@ export default {
     },
     extend: {
       colors: {
+        "main-blue": {
+          50: "#effefd",
+          100: "#c7fffb",
+          200: "#90fff6",
+          300: "#51f7f0",
+          400: "#1de4e2",
+          500: "#04c7c8",
+          600: "#00adb2",
+          700: "#057c80",
+          800: "#0a6065",
+          900: "#0d5154",
+          950: "#002e33",
+        },
+
         line: "#e6e7e8",
         disabled: "#9e9e9E",
         bgmain: "#fafafb",

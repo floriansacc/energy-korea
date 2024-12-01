@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { EvChargeModel, evChargeModelFromJson } from "../models/EvChargeModel";
+import {
+  EvChargeModel,
+  evChargeModelFromJson,
+} from "../../models/energy/EvChargeModel";
 
 const endpointUrl: string = "/kepcoapi//EVcharge.do";
 
@@ -57,12 +60,12 @@ export default function useEvCharge(props: UseEvChargeEntry) {
     };
 
     getEvCharge();
-  }, []);
+  }, [props.cityCode, props.townCode]);
 
   return { evCharge };
 }
 
 interface UseEvChargeEntry {
   cityCode: string | null;
-  townCode?: string;
+  townCode?: string | null;
 }

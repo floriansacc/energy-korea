@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import {
   RenewEnergyModel,
   renewEnergyModelFromJson,
-} from "../models/RenewEnergyModel";
+} from "../../models/energy/RenewEnergyModel";
 import { doc, DocumentSnapshot, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../../firebase";
 
 const endPointUrl: string = "/kepcoapi/renewEnergy.do";
 

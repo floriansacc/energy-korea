@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { elecHomeFromJson, ElecHomeModel } from "../models/ElecHomeModel";
+import {
+  elecHomeFromJson,
+  ElecHomeModel,
+} from "../../models/energy/ElecHomeModel";
 import { doc, DocumentSnapshot, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../../firebase";
 
 const endpointUrl: string = "/kepcoapi/powerUsage/houseAve.do";
 
