@@ -9,7 +9,7 @@ export default function HomePage() {
 
   return (
     <Context.Provider value={{ gpsLocation }}>
-      <div className="flex h-fit min-h-screen w-screen flex-col items-center justify-start bg-gray-800">
+      <div className="flex h-fit min-h-screen w-screen flex-col items-start justify-start bg-gray-800">
         <IntroPage />
       </div>
     </Context.Provider>

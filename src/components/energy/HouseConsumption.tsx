@@ -3,7 +3,7 @@ import { ElecHomeModel } from "../../models/energy/ElecHomeModel";
 export default function HouseConsumption(props: HouseConsumptionEntry) {
   return (
     <div
-      className="m-2 flex h-96 w-full snap-y snap-mandatory flex-col gap-1 overflow-scroll rounded-md border border-solid border-line bg-gray-700/80 px-4 py-2 transition-transform hover:scale-110"
+      className="m-2 flex h-96 w-full snap-y snap-mandatory flex-col gap-1 overflow-scroll rounded-md border border-solid border-line bg-gray-700/80 px-4 py-2 transition-transform sm:mx-0 sm:my-2 md:hover:scale-110 lg:hover:scale-110"
       style={
         {
           //
@@ -11,11 +11,18 @@ export default function HouseConsumption(props: HouseConsumptionEntry) {
         }
       }
     >
+      <h1 className="text-center text-2xl font-bold text-white">
+        가정편균 전기사용량
+      </h1>
       {props.entry?.errMsg === "NotFound" ? (
         <p
           className={`flex flex-col items-start justify-start p-2 text-lg font-semibold text-white/75`}
         >
-          데이터가 없습니다
+          조회하신 기간에 해당된 데이터가 없습니다 <br />
+          <span className="text-sm">
+            ({props.searchDate.getFullYear()}년{props.searchDate.getMonth() + 1}
+            월)
+          </span>
         </p>
       ) : (
         props?.entry?.data.map((e, i) => (
@@ -47,4 +54,5 @@ export default function HouseConsumption(props: HouseConsumptionEntry) {
 
 interface HouseConsumptionEntry {
   entry: ElecHomeModel | null;
+  searchDate: Date;
 }

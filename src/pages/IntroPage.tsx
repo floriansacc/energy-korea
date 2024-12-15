@@ -11,6 +11,7 @@ import HouseConsumption from "../components/energy/HouseConsumption";
 import EvChargeStation from "../components/energy/EvChargeStation";
 import useGetSearchDate from "../hooks/useGetSearchDate";
 import DateSelector from "../components/energy/DateSelector";
+import { FaMapMarkedAlt } from "react-icons/fa";
 
 export default function IntroPage() {
   const context = useContext(Context);
@@ -23,6 +24,8 @@ export default function IntroPage() {
     town: null,
     hasTown: false,
   });
+
+  const [isMapOpen, setIsMapOpen] = useState<boolean>(false);
 
   const { searchDate, setSearchDate, startDate, monthList } =
     useGetSearchDate();
@@ -100,12 +103,22 @@ export default function IntroPage() {
   }, [coords]);
 
   return (
-    <div className="relative mt-10 flex h-full w-full justify-between gap-2 px-4 py-2">
-      <div className="flex h-full w-full flex-col overscroll-y-auto rounded-md border border-solid border-main-blue-500">
+    <div
+      className="relative mt-10 flex h-full min-h-screen w-full justify-between gap-2 px-4 py-2 sm:mt-2"
+      onClick={isMapOpen ? () => setIsMapOpen(false) : () => null}
+    >
+      <div
+        className={`${isMapOpen ? "bg-main-blue-700" : "bg-main-blue-500"} absolute bottom-8 right-4 z-50 flex flex-col items-center justify-center gap-2 rounded-full bg-main-blue-500 px-2 py-4 text-base font-normal text-white transition-colors`}
+        onClick={() => setIsMapOpen(!isMapOpen)}
+      >
+        <p>지도 {isMapOpen ? "닫기" : "열기"}</p>
+        <FaMapMarkedAlt className="h-5 w-5" />
+      </div>
+      <div className="flex h-fit w-full flex-col overscroll-y-auto rounded-md border border-solid border-main-blue-500">
         <p className="mx-4 my-2 text-center text-lg font-semibold text-white">
           가정평균 전력사용량 및 전기차충전소 설치현황을 확인해보세요!
         </p>
-        <div className="flex w-full items-end justify-center px-4">
+        <div className="flex w-full items-end justify-start px-4 sm:flex-wrap">
           <CitySelector
             search={search}
             selectorValue={selectorValue}
@@ -123,13 +136,15 @@ export default function IntroPage() {
         </div>
         <div
           style={{ perspective: "550px", transformStyle: "preserve-3d" }}
-          className="relative flex w-full justify-between p-2"
+          className="relative flex w-full justify-between p-2 sm:flex-col"
         >
-          <EvChargeStation entry={evCharge} />
-          <HouseConsumption entry={elecHome} />
+          <EvChargeStation entry={evCharge} searchDate={searchDate} />
+          <HouseConsumption entry={elecHome} searchDate={searchDate} />
         </div>
       </div>
-      <div className="sticky top-5 h-96 w-2/6 min-w-[300px] overflow-hidden rounded-xl border border-solid border-black">
+      <div
+        className={`${isMapOpen ? "sm:visible sm:scale-100" : "sm:invisible sm:scale-0"} sticky left-1/2 z-50 h-96 w-2/6 min-w-[300px] overflow-hidden rounded-xl border border-solid border-black transition-all sm:absolute sm:bottom-20 sm:h-1/2 sm:w-[90%] sm:-translate-x-1/2 md:top-5 lg:top-5`}
+      >
         <MapComponent
           location={context?.gpsLocation ?? null}
           mapMarkers={Object.entries(coords ?? {}).map(([_, value]) => {
