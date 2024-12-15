@@ -26,6 +26,7 @@ export default function useEvCharge(props: UseEvChargeEntry) {
     if (!props.cityCode) return;
 
     const getEvCharge = async (): Promise<void> => {
+      setEvCharge(null);
       // const dbData: DocumentSnapshot = await getDoc(
       //   doc(db, collectionName, docName),
       // );
@@ -43,8 +44,12 @@ export default function useEvCharge(props: UseEvChargeEntry) {
           method: "GET",
         });
         if (!response.ok) {
-          const errorResponse = await response.text();
-          throw new Error(`${errorResponse}`);
+          const errorResponse: EvChargeModel = await response.json();
+          setEvCharge(errorResponse);
+
+          throw new Error(
+            `error code ${errorResponse.errCd}, ${errorResponse.errMsg}`,
+          );
         }
         const jsonResponse: EvChargeModel = evChargeModelFromJson(
           await response.json(),

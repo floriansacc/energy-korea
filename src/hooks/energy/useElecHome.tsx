@@ -30,6 +30,7 @@ export default function useElecHome(props: UseElecHomeEntry) {
     if (!props.cityCode || !props.year || !props.month) return;
 
     const getElecHome = async (): Promise<void> => {
+      setElecHome(null);
       const dbData: DocumentSnapshot = await getDoc(
         doc(db, collectionName, docName),
       );
@@ -49,8 +50,12 @@ export default function useElecHome(props: UseElecHomeEntry) {
             method: "GET",
           });
           if (!response.ok) {
-            const errorResponse = await response.text();
-            throw new Error(`${errorResponse}`);
+            const errorResponse: ElecHomeModel = await response.json();
+            setElecHome(errorResponse);
+
+            throw new Error(
+              `error code ${errorResponse.errCd}, ${errorResponse.errMsg}`,
+            );
           }
           const jsonResponse: ElecHomeModel = elecHomeFromJson(
             await response.json(),
@@ -67,7 +72,7 @@ export default function useElecHome(props: UseElecHomeEntry) {
     };
 
     getElecHome();
-  }, [props.cityCode, props.townCode]);
+  }, [props.cityCode, props.townCode, props.year, props.month]);
 
   return { elecHome };
 }

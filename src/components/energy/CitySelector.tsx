@@ -7,10 +7,6 @@ import { SearchInteface } from "../../pages/IntroPage";
 export default function CitySelector(props: CitySelectorEntry) {
   return (
     <div className="flex flex-col items-center justify-center gap-2">
-      <p className="text-lg font-semibold text-white">
-        가정평균 전력사용량을 확인해보세요!
-      </p>
-
       <div className="relative flex gap-2">
         <div
           className={`${props.selectorValue === CommonCodeEnum.town ? "translate-x-[100%]" : ""} absolute left-0 z-10 h-8 w-1/2 rounded-md bg-main-blue-500 px-3 transition-transform duration-300 ease-in-out`}
@@ -38,9 +34,9 @@ export default function CitySelector(props: CitySelectorEntry) {
           시군별
         </button>
       </div>
-      <div className="flex">
+      <div className="m-2 flex gap-2">
         <select
-          className="m-2 w-fit rounded-xl bg-white/25 p-1 text-white"
+          className="w-fit rounded-xl bg-white/25 p-1 text-white"
           value={props.search.city ?? ""}
           onChange={(e) => props.handleSearchChange(e, "city")}
         >
@@ -58,7 +54,7 @@ export default function CitySelector(props: CitySelectorEntry) {
         </select>
         {props.selectorValue === CommonCodeEnum.town && (
           <select
-            className="m-2 w-fit rounded-xl bg-white/25 p-1 text-white"
+            className="w-fit rounded-xl bg-white/25 p-1 text-white"
             disabled={!props.search.city}
             value={props.search.town ?? ""}
             onChange={(e) => props.handleSearchChange(e, "town")}

@@ -11,10 +11,14 @@ export default function MapComponent(props: MapComponentProps) {
   return (
     <Map
       center={{
-        lat: props?.location?.latitude ?? 37.526126,
-        lng: props?.location?.longitude ?? 126.922255,
+        lat:
+          props?.mapMarkers?.[0]?.lat ?? props?.location?.latitude ?? 37.526126,
+        lng:
+          props?.mapMarkers?.[0]?.lng ??
+          props?.location?.longitude ??
+          126.922255,
       }}
-      level={4}
+      level={props?.mapMarkers?.[0]?.lng ? 6 : 4}
       className="h-full w-full"
     >
       {/* <Polyline

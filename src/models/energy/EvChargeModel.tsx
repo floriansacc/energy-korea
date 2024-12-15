@@ -1,5 +1,5 @@
 export interface EvChargeModel {
-  data?: EvCharge[];
+  data: EvCharge[];
   errCd?: number | null;
   errMsg?: string | null;
 }
